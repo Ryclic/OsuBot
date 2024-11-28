@@ -1,0 +1,4 @@
+# No secrets file
+secrets_storage.py
+# No pycache directory
+/__pycache__
