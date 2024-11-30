@@ -5,11 +5,7 @@ from secrets_storage import *
 
 api = Ossapi(OSU_CLIENT_ID, OSU_CLIENT_SECRET)
 
-'''
-Must first find latest beatmap ID for RNG range, average
-the latest 5 WIP beatmaps to find this number.
-NOTE: the search returns 50 beatmaps
-'''
+# Use the latest submitted WIP map to determine the latest beatmapset ID
 def find_recent_id():
     wip_maps = api.search_beatmapsets(mode=0, category="wip")
     wip_maps_dates = []
