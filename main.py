@@ -56,7 +56,7 @@ async def bgtrivia(ctx, arg=1):
     except NotImplementedError:
         await ctx.reply("You skipped the question! The map was: **" + map_title + "** \n" + challenge_map.beatmaps[-1].url)
     else:
-        await ctx.reply("That's correct!")
+        await ctx.reply("That's correct! The map was: **" + map_title + "** \n" + challenge_map.beatmaps[-1].url)
 
 @bot.command()
 async def strivia(ctx, arg=1):
@@ -101,7 +101,7 @@ async def strivia(ctx, arg=1):
     except NotImplementedError:
         await ctx.reply("You skipped the question! The map was: **" + map_title + "** \n" + challenge_map.beatmaps[-1].url)
     else:
-        await ctx.reply("That's correct!")
+        await ctx.reply("That's correct! The map was: **" + map_title + "** \n" + challenge_map.beatmaps[-1].url)wait ctx.reply("That's correct!")
 
 bot.run(DISCORD_KEY)
 
