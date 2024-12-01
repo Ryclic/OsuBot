@@ -36,7 +36,11 @@ async def rmap(ctx, difficulty=None):
 @bot.command()
 async def bgtrivia(ctx, difficulty=None, shared=""):
     print("[Selecting Random Map]")
-    difficulty = random_index = randint(1, 999)
+    # If user doesn't input custom, select random from paged beatmaps
+    if difficulty == None:
+        difficulty = randint(1, 999)
+    
+    print(f"[Difficulty: {difficulty}")
     challenge_map = select_map(difficulty)
     challenge_image = challenge_map.covers.cover_2x
     # Get rid of (TV Size) headers, etc for better matching
@@ -86,7 +90,12 @@ async def bgtrivia(ctx, difficulty=None, shared=""):
 @bot.command()
 async def strivia(ctx, difficulty=None, shared=""):
     print("[Selecting Random Map]")
-    difficulty = random_index = randint(1, 999)
+
+    # If user doesn't input custom, select random from paged beatmaps
+    if difficulty == None:
+        difficulty = randint(1, 999)
+    
+    print(f"[Difficulty: {difficulty}")
     challenge_map = select_map(difficulty)
     challenge_mp3_url = "https://" + challenge_map.preview_url[2:]
     mp3_data = None
