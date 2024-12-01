@@ -1,5 +1,5 @@
-# OsuBot
-Yet another osu! bot with some personal utilities.  
+# osu!trivia
+Discord bot for fun osu! trivia questions. 
 ### Current Functions:  
 -bgtrivia (guess a map by background)  
 -rmap (fetch a random map)  
