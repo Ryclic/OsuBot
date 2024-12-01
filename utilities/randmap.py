@@ -1,7 +1,7 @@
 from ossapi import *
 from datetime import datetime, timezone
 from random import randint
-from secrets_storage import *
+from utilities.secrets_storage import *
 
 api = Ossapi(OSU_CLIENT_ID, OSU_CLIENT_SECRET)
 

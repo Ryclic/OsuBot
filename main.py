@@ -3,12 +3,20 @@ import asyncio
 import re
 import requests
 import io
+import os
 from discord.ext import commands
-from randmap import *
-from trivia import *
-from secrets_storage import *
 from rapidfuzz import fuzz
+from utilities.randmap import *
+from utilities.trivia import *
+from utilities.secrets_storage import *
+from utilities.fetch_cursors import *
 
+# Ensure cursors are pre-computed - check for file, compute if not there
+if not os.path.exists("./cursors.obj"):
+    print(os.path.exists("./cursors.obj"))
+    fetch_cursors(10)
+    
+# Initialize Discord specifics
 intents = discord.Intents.default()
 intents.message_content = True
 
@@ -26,7 +34,7 @@ async def rmap(ctx, difficulty=None):
     print("[Random Map Sent]")
     
 @bot.command()
-async def bgtrivia(ctx, difficulty=1, shared="no"):
+async def bgtrivia(ctx, difficulty=1, shared=""):
     print("[Selecting Random Map]")
     challenge_map = select_map(difficulty)
     challenge_image = challenge_map.covers.cover_2x
@@ -40,20 +48,27 @@ async def bgtrivia(ctx, difficulty=1, shared="no"):
     await ctx.reply(embed=embed)
     print("[Map Challenge Sent: " + map_title + "]")
 
+
+    solved_user = None
     def check(m):
-        if shared == "yes":
-            if m.channel == ctx.channel:
-                if m.content == "skip":
-                    raise NotImplementedError()
-                elif fuzz.ratio(map_title, m.content) >= 50:
-                    return True
-                else:
-                    return False
-        else:
+        # Use the varaible from outside the function
+        nonlocal solved_user
+
+        if shared == "solo":
             if m.channel == ctx.channel and m.author.id == ctx.author.id:
                 if m.content == "skip":
                     raise NotImplementedError()
                 elif fuzz.ratio(map_title, m.content) >= 50:
+                    solved_user = m.author.id
+                    return True
+                else:
+                    return False
+        else:
+            if m.channel == ctx.channel:
+                if m.content == "skip":
+                    raise NotImplementedError()
+                elif fuzz.ratio(map_title, m.content) >= 50:
+                    solved_user = m.author.id
                     return True
                 else:
                     return False
@@ -65,10 +80,10 @@ async def bgtrivia(ctx, difficulty=1, shared="no"):
     except NotImplementedError:
         await ctx.reply("You skipped the question! The map was: **" + map_title + "** \n" + challenge_map.beatmaps[-1].url)
     else:
-        await ctx.reply("That's correct! The map was: **" + map_title + "** \n" + challenge_map.beatmaps[-1].url)
+        await ctx.reply(f"That's correct, <@{solved_user}>! The map was: **" + map_title + "** \n" + challenge_map.beatmaps[-1].url)
 
 @bot.command()
-async def strivia(ctx, difficulty=1, shared="no"):
+async def strivia(ctx, difficulty=1, shared=""):
     print("[Selecting Random Map]")
     challenge_map = select_map(difficulty)
     challenge_mp3_url = "https://" + challenge_map.preview_url[2:]
@@ -94,20 +109,26 @@ async def strivia(ctx, difficulty=1, shared="no"):
     await ctx.reply(file=discord.File(mp3_data, filename="song.mp3"))
     print("[Map Challenge Sent: " + map_title + "]")
 
+    solved_user = None
     def check(m):
-        if shared == "yes":
-            if m.channel == ctx.channel:
-                if m.content == "skip":
-                    raise NotImplementedError()
-                elif fuzz.ratio(map_title, m.content) >= 50:
-                    return True
-                else:
-                    return False
-        else:
+        # Use the varaible from outside the function
+        nonlocal solved_user
+        
+        if shared == "solo":
             if m.channel == ctx.channel and m.author.id == ctx.author.id:
                 if m.content == "skip":
                     raise NotImplementedError()
                 elif fuzz.ratio(map_title, m.content) >= 50:
+                    solved_user = m.author.id
+                    return True
+                else:
+                    return False
+        else:
+            if m.channel == ctx.channel:
+                if m.content == "skip":
+                    raise NotImplementedError()
+                elif fuzz.ratio(map_title, m.content) >= 50:
+                    solved_user = m.author.id
                     return True
                 else:
                     return False
@@ -119,7 +140,7 @@ async def strivia(ctx, difficulty=1, shared="no"):
     except NotImplementedError:
         await ctx.reply("You skipped the question! The map was: **" + map_title + "** \n" + challenge_map.beatmaps[-1].url)
     else:
-        await ctx.reply("That's correct! The map was: **" + map_title + "** \n" + challenge_map.beatmaps[-1].url)
+        await ctx.reply(f"That's correct, <@{solved_user}>! The map was: **" + map_title + "** \n" + challenge_map.beatmaps[-1].url)
 
 bot.run(DISCORD_KEY)
 

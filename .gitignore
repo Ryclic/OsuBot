@@ -2,3 +2,4 @@
 secrets_storage.py
 # No pycache directory
 /__pycache__
+/utilities/__pycache__
