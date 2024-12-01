@@ -41,7 +41,7 @@ async def bgtrivia(ctx, difficulty=None, shared=""):
         difficulty = randint(1, 999)
     
     print(f"[Difficulty: {difficulty}]")
-    challenge_map = select_map(difficulty)
+    challenge_map = select_map(int(difficulty))
     challenge_image = challenge_map.covers.cover_2x
     # Get rid of (TV Size) headers, etc for better matching
     map_title = re.sub(r'\[[^\]]*\]|\([^)]*\)', '', challenge_map.title).lower().strip()
@@ -96,7 +96,7 @@ async def strivia(ctx, difficulty=None, shared=""):
         difficulty = randint(1, 999)
     
     print(f"[Difficulty: {difficulty}]")
-    challenge_map = select_map(difficulty)
+    challenge_map = select_map(int(difficulty))
     challenge_mp3_url = "https://" + challenge_map.preview_url[2:]
     mp3_data = None
     # Store the mp3 in memory
