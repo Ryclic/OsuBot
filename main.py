@@ -14,7 +14,7 @@ from utilities.fetch_cursors import *
 # Ensure cursors are pre-computed - check for file, compute if not there
 if not os.path.exists("./cursors.obj"):
     print(os.path.exists("./cursors.obj"))
-    fetch_cursors(10)
+    fetch_cursors(1000)
     
 # Initialize Discord specifics
 intents = discord.Intents.default()
