@@ -3,3 +3,5 @@ secrets_storage.py
 # No pycache directory
 /__pycache__
 /utilities/__pycache__
+# No pagination cache
+cursors.obj
