@@ -34,8 +34,9 @@ async def rmap(ctx, difficulty=None):
     print("[Random Map Sent]")
     
 @bot.command()
-async def bgtrivia(ctx, difficulty=1, shared=""):
+async def bgtrivia(ctx, difficulty=None, shared=""):
     print("[Selecting Random Map]")
+    difficulty = random_index = randint(1, 999)
     challenge_map = select_map(difficulty)
     challenge_image = challenge_map.covers.cover_2x
     # Get rid of (TV Size) headers, etc for better matching
@@ -83,8 +84,9 @@ async def bgtrivia(ctx, difficulty=1, shared=""):
         await ctx.reply(f"That's correct, <@{solved_user}>! The map was: **" + map_title + "** \n" + challenge_map.beatmaps[-1].url)
 
 @bot.command()
-async def strivia(ctx, difficulty=1, shared=""):
+async def strivia(ctx, difficulty=None, shared=""):
     print("[Selecting Random Map]")
+    difficulty = random_index = randint(1, 999)
     challenge_map = select_map(difficulty)
     challenge_mp3_url = "https://" + challenge_map.preview_url[2:]
     mp3_data = None
